@@ -1,3 +1,4 @@
+const tag = '[MyDirectives]'
 const validateFns = {
   required (val, name) {
     if (!val) {
@@ -33,7 +34,7 @@ class Validator {
   }
 
   _setErrorToVm(context) {
-    context.errors = this.errors
+    context.errorBag = this.errors
   }
 
   validate (el, binding, vnode) {
@@ -62,16 +63,16 @@ const validator = new Validator()
 export default {
   validate: {
     bind (el, binding, vnode) {
-      console.log('directive:bind')
+      console.log(tag, 'bind()')
       validator.setup(el, binding, vnode)
     },
 
     inserted (el, binding, vnode) {
-      console.log('directive:inserted')     
+      console.log(tag, 'inserted()')     
     },
 
     update (el, binding, vnode) {
-      console.log('directive:update')
+      console.log(tag, 'update()')
       validator.validate(el, binding, vnode)
     }
   }

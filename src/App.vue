@@ -2,30 +2,24 @@
   <div id="app">
     <form>
       <input type="text" name="name" v-model="name" v-validate="'required|minLen3'">
-      <span v-if="errors.name">{{errors.name[0]}}</span>
-      <pre>{{errors}}</pre>
+      <span v-if="errors.has('name')">{{errors.first('name')}}</span>
+      <pre>{{errorBag}}</pre>
       <button type="submit">Submit</button>
     </form>
   </div>
 </template>
 
 <script>
-import directives from './directives'
+const tag = '[App]'
 
 export default {
-  name: 'app',
-  directives,
   data () {
     return {
-      name: null,
-      errors: {}
+      name: ''
     }
   },
   updated() {
-    console.log('App:updated')
+    console.log(tag, 'updated()')
   }
 }
 </script>
-
-<style>
-</style>
