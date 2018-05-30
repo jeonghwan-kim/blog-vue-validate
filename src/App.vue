@@ -17,9 +17,6 @@ export default {
       name: ''
     }
   },
-  updated() {
-    console.log(tag, 'updated()')
-  },
   methods: {
     onSubmit() {
       this.$validator.validateAll()
