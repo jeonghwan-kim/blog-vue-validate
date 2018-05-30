@@ -18,15 +18,17 @@ export default {
   data () {
     return {
       name: '',
-      errorBag: {
-        ts: Date.now(),
-      }
+      errorBag: {}
     }
   },
   methods: {
     onSubmit() {
-      this.errorBag.name = validator.validate('name', this.name)
-      this.errorBag.ts = Date.now()
+      const errors = validator.validate('name', this.name)
+      if (errors) {
+        this.$set(this.errorBag, 'name', errors)
+      } else {
+        this.$delete(this.errorBag, 'name')
+      }
     }
   }
 }

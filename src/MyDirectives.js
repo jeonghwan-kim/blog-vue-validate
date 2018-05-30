@@ -10,18 +10,20 @@ export default {
       validator.setup(el.name, binding.expression, vnode.context)
     },
 
-    update (el, binding, vnode) {
-      console.log(tag, 'update()')
+    update (el, binding, vnode, oldNode) {
+      console.log(tag, 'update()', JSON.stringify(vnode.context.errorBag))
+
       const key = el.name
       const errors = validator.validate(key, el.value)
+      const s = JSON.stringify
+
+      if (s(errors) === s(vnode.context.errorBag[key])) return 
 
       if (errors.length) {
-        vnode.context.errorBag[key] = errors
+        vnode.context.$set(vnode.context.errorBag, key, errors)
       } else {
-        delete vnode.context.errorBag[key]
+        vnode.context.$delete(vnode.context.errorBag, key)
       }
-
-      vnode.context.errorBag.ts = Date.now()
     }
   }
 }
