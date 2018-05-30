@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <form>
+    <form @submit.prevent="onSubmit">
       <input type="text" name="name" v-model="name" v-validate="'required|minLen3'">
-      <span v-if="errors.has('name')">{{errors.first('name')}}</span>
-      <pre>{{errorBag}}</pre>
+      <p v-if="errors.has('name')">{{ errors.first('name') }}</p>
       <button type="submit">Submit</button>
     </form>
+    <pre>{{errorBag}}</pre>
   </div>
 </template>
 
@@ -18,8 +18,10 @@ export default {
       name: ''
     }
   },
-  updated() {
-    console.log(tag, 'updated()')
+  methods: {
+    onSubmit() {
+      this.validator.validateAll()
+    }
   }
 }
 </script>

@@ -1,4 +1,5 @@
 import MyDirectives from './MyDirectives'
+import validator from './validator'
 
 const tag = '[MyPlugin]'
 
@@ -11,7 +12,9 @@ export default {
     Vue.mixin({
       data() {
         return {
-          errorBag: {}
+          errorBag: {
+            ts: Date.now()
+          }
         }
       },
       computed: {
@@ -24,6 +27,23 @@ export default {
             },
             first(key) {
               return errorBag[key][0]
+            }
+          }
+        },
+        validator() {
+          const errorBag = this.errorBag || {}
+
+          return {
+            validateAll() {
+              const errors = validator.validate('name', this.name)
+
+              if (errors.length) {
+                errorBag.name = errors
+              } else {
+                delete errorBag.name
+              }
+              
+              errorBag.ts = Date.now()
             }
           }
         }
