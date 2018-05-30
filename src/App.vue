@@ -19,13 +19,14 @@ export default {
     return {
       name: '',
       errorBag: {
-        name: []
+        ts: Date.now(),
       }
     }
   },
   methods: {
     onSubmit() {
       this.errorBag.name = validator.validate('name', this.name)
+      this.errorBag.ts = Date.now()
     }
   }
 }

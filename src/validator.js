@@ -1,41 +1,38 @@
 const tag = '[Validator]'
 
 const validateFns = {
-  required (val, name) {
+  required (key, val) {
     if (!val) {
-      return `${name} is required`
+      return `${key} is required`
     }
   },
-  minLen3 (val, name) {
+  minLen3 (key, val) {
     if (!val || val.length < 3) {
-      return `${name} should have more than 3 letters`
+      return `${key} should have more than 3 letters`
     }
   }
 }
 
-class Validator {
-  constructor () {
+const validator = {
+  init () {
     this.errors = {}
     this.validates = new Map()
-  }
+    return this
+  },
 
   setup (key, expression) {
-    this._setValidates(key, expression)
-  }
-
-  _setValidates(key, expression) {
     const validates = expression.replace(/'/g, '').split('|')
     this.validates.set(key, validates)
-  }
+  },
 
   validate (key, value) {
     const validates = this.validates.get(key)
     const errors = validates
-      .map(v => validateFns[v](value, key))
+      .map(v => validateFns[v](key, value))
       .filter(v => !!v)
     
     return errors
   }
 }
 
-export default new Validator()
+export default validator.init()
