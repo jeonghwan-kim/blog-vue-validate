@@ -17,8 +17,9 @@ export default {
           }
         }
       },
+
       computed: {
-        errors() {
+        $errors () {
           const errorBag = this.errorBag || {}
 
           return {
@@ -30,19 +31,21 @@ export default {
             }
           }
         },
-        validator() {
+
+        $validator () {
           const errorBag = this.errorBag || {}
 
           return {
             validateAll() {
-              const errors = validator.validate('name', this.name)
-
-              if (errors.length) {
-                errorBag.name = errors
-              } else {
-                delete errorBag.name
+              for (const key of validator.validates.keys()) {
+                const errors = validator.validate(key, this[key])
+                if (errors.length) {
+                  errorBag[key] = errors
+                } else {
+                  delete errorBag[key]
+                }
               }
-              
+
               errorBag.ts = Date.now()
             }
           }

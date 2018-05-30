@@ -6,11 +6,13 @@ export default {
   validate: {
     bind (el, binding, vnode) {
       console.log(tag, 'bind()')
+
       validator.setup(el.name, binding.expression)
     },
 
     update (el, binding, vnode) {
       console.log(tag, 'update()')
+ 
       const key = el.name
       const errors = validator.validate(key, el.value)
       
