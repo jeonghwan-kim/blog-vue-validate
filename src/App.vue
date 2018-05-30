@@ -1,31 +1,32 @@
 <template>
   <div id="app">
-    <form>
-      <input type="text" name="name" v-model="name" v-validate="'required|minLen3'">
-      <span v-if="errors.name">{{errors.name[0]}}</span>
-      <pre>{{errors}}</pre>
+    <form @submit.prevent="onSubmit">
+      <input name="name" v-model="name" v-validate="'required|minLen3'">
+      <p v-if="errorBag.name">{{ errorBag.name[0] }}</p>
       <button type="submit">Submit</button>
     </form>
+    <pre>{{errorBag}}</pre>
   </div>
 </template>
 
 <script>
-import directives from './directives'
+import directives from './MyDirectives'
+import validator from './validator'
 
 export default {
-  name: 'app',
   directives,
   data () {
     return {
-      name: null,
-      errors: {}
+      name: '',
+      errorBag: {
+        name: []
+      }
     }
   },
-  updated() {
-    console.log('App:updated')
+  methods: {
+    onSubmit() {
+      this.errorBag.name = validator.validate('name', this.name)
+    }
   }
 }
 </script>
-
-<style>
-</style>
