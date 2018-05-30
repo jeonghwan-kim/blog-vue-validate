@@ -10,19 +10,7 @@
 
 <script>
 
-const Validator = {
-  validate (val) {
-    const errors = []
-    
-    if (!val) {
-      errors.push('name field is required')
-    } else {
-      if (val.length < 3) errors.push('name filed should have length of 3')
-    }
-    
-    return errors
-  }
-}
+import validator from './validator'
 
 export default {
   data () {
@@ -35,12 +23,12 @@ export default {
   },
   watch: {
     name (val) {
-      this.errorBag.name = Validator.validate(val)
+      this.errorBag.name = validator.validate('name', val)
     }
   },
   methods: {
     onSubmit() {
-      this.errorBag.name = Validator.validate(this.name)
+      this.errorBag.name = validator.validate('name', this.name)
     }
   }
 }
