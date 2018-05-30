@@ -12,9 +12,7 @@ export default {
     Vue.mixin({
       data() {
         return {
-          errorBag: {
-            ts: Date.now()
-          }
+          errorBag: {}
         }
       },
 
@@ -33,20 +31,19 @@ export default {
         },
 
         $validator () {
-          const errorBag = this.errorBag || {}
+          const context = this
 
           return {
             validateAll() {
               for (const key of validator.validates.keys()) {
-                const errors = validator.validate(key, this[key])
+                const errors = validator.validate(key, context[key])
+
                 if (errors.length) {
-                  errorBag[key] = errors
+                  context.$set(context.errorBag, key, errors)
                 } else {
-                  delete errorBag[key]
+                  context.$delete(context.errorBag, key)
                 }
               }
-
-              errorBag.ts = Date.now()
             }
           }
         }

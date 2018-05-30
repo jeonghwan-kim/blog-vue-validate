@@ -15,14 +15,15 @@ export default {
  
       const key = el.name
       const errors = validator.validate(key, el.value)
+      const s = JSON.stringify
       
+      if (s(errors) === s(vnode.context.errorBag[key])) return 
+
       if (errors.length) {
-        vnode.context.errorBag[el.name] = errors
+        vnode.context.$set(vnode.context.errorBag, key, errors)
       } else {
-        delete vnode.context.errorBag[el.name]
+        vnode.context.$delete(vnode.context.errorBag, key)
       }
-      
-      vnode.context.errorBag.ts = Date.now()
     }
   }
 }
